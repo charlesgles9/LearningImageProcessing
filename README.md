@@ -2,12 +2,12 @@
 
 ## Features
 
-1 Gaussian Blur.
+1 *Gaussian Blur*.
 
-2 Floyd Steinberg dithering.
+2 *Floyd Steinberg dithering*.
 
-3 Sobel Edge Detection.
+3 *Sobel Edge Detection*.
 
-4 GrayScaling.
+4 *GrayScaling*.
 
-5 Color Inversion.
+5 *Color Inversion*.
