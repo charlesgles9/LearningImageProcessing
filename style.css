@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+.container{
+display:flex;
+margin:50px;
+padding:50px;
+border-radius:10px;
+width:max-content;
+border: 5px solid green;
+}
+
+.settings{
+display:block;
+width:300px;
+padding:10px;
+border-radius:10px;
+box-shadow: 0px 0px 5px 5px grey;
+}
+
+#start-camera{
+ background:red;
+ width:100%;
+ padding:10px;
+ border: 1px solid black;
+ box-shadow: 0px 0px 2px 2px blue;
+ border-radius:10px;
+ font-size:15px;
+ font-weight:bold;
+ color:white;
+
+}
+
+.output-views{
+height: 100%;
+width:550px;
+padding:10px;
+display:block;
+}
+
+#video{
+margin:auto;
+display:none;
+border-radius:10px;
+}
+
+#canvas{
+margin-left:10px;
+box-shadow: 0px 0px 5px 5px grey;
+border-radius:10px;
+}
+
+
+/*options header*/
+.options-header{
+ padding-top:20px;
+ border-bottom:1px solid grey;
+ border-bottom-style:solid;
+ width:100%
+}
+.options-header p{
+ font-size:15px;
+}
+
+/*check button style*/
+.switch{
+ display:flex;
+ padding:10px;
+ width:100%;
+}
+
+.switch p{
+ font-size:12px;
+ padding:5px;
+ width:130px;
+}
+
+.switch-options-settings{
+ display:flex;
+ margin-left:40px;
+ align-items:center;
+}
+.switch-options-settings p{
+  font-size:11px;
+  text-align:center;
+}
+.switch-options-settings option{
+font-size:11px;
+}
+
+
+.switch-options-settings select{
+    font-size:11px;
+    padding:5px;
+    margin-left:10px;
+}
+optgroup{
+ font-size:11px;
+
+}
+
+
+.
+
+

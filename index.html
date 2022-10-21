@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Sobel Detection </title>
+   <link rel="stylesheet" href="style.css">
+  </head>
+
+
+<body>
+	
+<div class="container"> 
+	
+	
+	<div class="settings">
+	  <button id="start-camera">Start Camera</button>
+     
+     <div class="options-header">
+      <p>Active algorithm</p>
+     </div>
+       <div class="switch" onclick="toggleDithering()">
+		   <p>Enable dithering</p>
+       <input type="checkbox" id="ditheringBox" checked='true'>
+       </div>
+       <div class="switch-options-settings">
+          <p>Bit depth</p>
+          <select id="bitDepth" onchange="toggleBitDepth(this)">
+			   <optgroup>
+             <option id="_4bit" value="4bit">4Bit</option>
+             <option id="_8bit" value="8bit">8Bit</option>
+             <option id="_16bit" value="16bit" selected>16Bit</option>
+             <option id="_32bit" value="32bit">32Bit</option>
+             <option id="_64bit" value="64bit">64Bit</option>
+             </optgroup>
+          </select>
+       </div>
+         <div class="switch" onclick="toggleEdgeDetection()">
+		   <p>Enable Edge Detection</p>
+       <input type="checkbox" id="edgeDetectionBox">
+       </div>
+      <div class="switch" onclick="toggleGrayscale()">
+		   <p>Enable grayscale</p>
+       <input type="checkbox" id="grayscaleBox">
+       </div>
+       <div class="switch" onclick="toggleGausianBlur()">
+		   <p>Enable gausian Blur</p>
+       <input type="checkbox" id="gausionBox">
+       </div>
+         <div class="switch" onclick="toggleInversion()">
+		   <p>Enable B/W inversion</p>
+       <input type="checkbox" id="inversionBox">
+       </div>
+        <div class="options-header">
+      <p>Active color channels</p>
+     </div>
+      <div class="switch" onclick="toggleRedChannel()">
+		   <p>Red</p>
+       <input type="checkbox" id ="red" checked='true'>
+       </div>
+       <div class="switch" onclick="toggleGreenChannel()">
+		   <p>Green</p>
+       <input type="checkbox" id="green" checked='true'>
+       </div>
+       <div class="switch"  onclick="toggleBlueChannel()">
+		   <p>Blue</p>
+       <input type="checkbox" id="blue" checked='true'>
+       </div>
+	</div>
+  <div class="output-views">
+      <video id="video" width="500" height="400" autoplay></video>
+      <canvas id="canvas" width="500" height="400"></canvas>
+</div>
+
+</div>
+</body>
+  <script text="type/typejavascript" src="logic.js"></script>
+
+</html>
