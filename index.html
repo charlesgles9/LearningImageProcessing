@@ -59,6 +59,22 @@
        </div>
        <input type="range" min="1" max="100" value="80" class="slider" id="hackerRange" onchange="hackerEffectIntensityChanged(this)">
         <div class="options-header">
+		 <div class="switch" onclick="togglePixelEffect()">
+		   <p>Pixellated Effect</p>
+       <input type="checkbox" id="pixelBox">
+       </div>	
+         <div class="switch-options-settings">
+        <p>Px Size</p>
+          <select id="pixelSize" onchange="togglePixelSize(this)">
+			   <optgroup>
+             <option id="2px" value="2px">2px</option>
+             <option id="4px" value="4px">4px</option>
+             <option id="8px" value="8px" selected>8px</option>
+             <option id="16px" value="16px">16px</option>
+             <option id="32px" value="32px">32px</option>
+             </optgroup>
+          </select>
+          </div>
       <p>Active color channels</p>
      </div>
       <div class="switch" onclick="toggleRedChannel()">

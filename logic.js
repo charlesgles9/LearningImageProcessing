@@ -26,11 +26,12 @@ var grayscaleEnabled=false;
 var edgeDetectionEnabled=false;
 var inversionEnabled=false;
 var hackerEffectEnabled=false;
-
+var pixellatedEnabled=false;
 //RGB active channels
 var activeChannels=[true,true,true,true];
 var ditheringBitDepth=16;
 var hackerEffectIntensity=0.8;
+var pixelArtOffset=8;
 function getTimeStamp(){
 return window.performance&&window.performance.now?
 window.performance.now():new Date().getTime();
@@ -41,10 +42,6 @@ camera_button.addEventListener('click', async function() {
 	video.srcObject = stream;
 	started=true;
 });
-
-
-
-
 
 function update(){
   time=getTimeStamp()
@@ -61,9 +58,10 @@ requestAnimationFrame(update)
 
 // rgb to decimal var dec = r << 16 + g << 16 + b;
  function editPixels(image,ctx) {
-   
+    if(pixellatedEnabled)
+   pixellateImage(image.data);
      // perfom floyd-Steinberg dithering
-   if(ditheringEnabled)
+   if(ditheringEnabled){
     for(let col=0;col<canvas.height;col++){
      for(let row=0;row<canvas.width;row++){
 	     	const index=(row*canvas.height+col)*4;
@@ -85,6 +83,7 @@ requestAnimationFrame(update)
 		}
 		
 	}
+}
      
 	//gray scale the image
 	if(grayscaleEnabled)
@@ -112,6 +111,7 @@ requestAnimationFrame(update)
    invertColors(image.data);
    if(hackerEffectEnabled)
    hackerEffect(image.data);
+  
    ctx.putImageData(image, 0, 0);
  
    
@@ -157,7 +157,7 @@ requestAnimationFrame(update)
  } 
   
   
-  function invertColors(data){
+function invertColors(data){
   for(let col=1;col<canvas.height-1;col++){
      for(let row=1;row<canvas.width-1;row++){
 		 const index=getPixel(row,col);
@@ -188,15 +188,31 @@ function hackerEffect(data){
 			   data[index+1]=0;
 			   data[index+2]=0;
 			   data[index+3]=255;
-		   }	 
-		 
+		   }	  
 	}
   }
 	
 }
   
+function pixellateImage(data){
+  for(let row=0;row<canvas.width;row+=pixelArtOffset){
+	for(let col=0;col<canvas.height;col+=pixelArtOffset){
+		const parentIndex=getPixel(row,col);
+		const r=data[parentIndex];
+		const g=data[parentIndex+1];
+		const b=data[parentIndex+2];
+	for(let pr=row;(pr<row+pixelArtOffset)&(pr<canvas.width);pr++){
+	  for(let cr=col;(cr<col+pixelArtOffset)&(cr<canvas.height);cr++){
+	     const nbrIndex=getPixel(pr,cr);
+	     	data[nbrIndex]=r;
+	     	data[nbrIndex+1]=g;
+	     	data[nbrIndex+2]=b;	
+	}	
+   }
+ }}
+}
   
-  function calculateGausinanBlur(data){
+function calculateGausinanBlur(data){
 	  const output=[];
 	   for(let row=1;row<canvas.width-1;row++){
 	for(let col=1;col<canvas.height-1;col++){
@@ -360,6 +376,28 @@ function hackerEffect(data){
 		 }
    }
    
+   function togglePixelSize(selectObject){
+	    var opt=selectObject.options[selectObject.selectedIndex];
+	     switch(opt.text){
+			case "2px":
+			pixelArtOffset=2;
+			break;
+			case "4px":
+			pixelArtOffset=4;
+			break;
+			case "8px":
+			pixelArtOffset=8;
+			break;
+			case "16px":
+			pixelArtOffset=16;
+			break;
+			case "32px":
+			pixelArtOffset=32;
+			break; 
+			
+		 }
+   }
+   
    function toggleDithering(){
 	   ditheringEnabled=!ditheringEnabled;
 	  document.getElementById("ditheringBox").checked=ditheringEnabled;
@@ -415,6 +453,13 @@ function hackerEffect(data){
    function toggleHackerEffect(){
 	   hackerEffectEnabled=!hackerEffectEnabled;
 	  document.getElementById("hackerBox").checked=hackerEffectEnabled;
+   }
+   
+   function togglePixelEffect(){
+	  pixellatedEnabled=!pixellatedEnabled;
+	  document.getElementById("pixelBox").checked=pixellatedEnabled;
+ 
+	   
    }
    
    function hackerEffectIntensityChanged(slider){
