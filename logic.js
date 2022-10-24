@@ -1,6 +1,6 @@
 
 var last_frame=0
-var slide_speed=60
+var slide_speed=30
 var time=0
 
 let camera_button = document.querySelector("#start-camera");
@@ -25,10 +25,12 @@ var ditheringEnabled=true;
 var grayscaleEnabled=false;
 var edgeDetectionEnabled=false;
 var inversionEnabled=false;
+var hackerEffectEnabled=false;
 
 //RGB active channels
 var activeChannels=[true,true,true,true];
 var ditheringBitDepth=16;
+var hackerEffectIntensity=0.8;
 function getTimeStamp(){
 return window.performance&&window.performance.now?
 window.performance.now():new Date().getTime();
@@ -108,6 +110,8 @@ requestAnimationFrame(update)
    
    if(inversionEnabled)
    invertColors(image.data);
+   if(hackerEffectEnabled)
+   hackerEffect(image.data);
    ctx.putImageData(image, 0, 0);
  
    
@@ -166,6 +170,29 @@ requestAnimationFrame(update)
 		 
 	}
   }
+}
+
+function hackerEffect(data){
+	 for(let col=1;col<canvas.height-1;col++){
+     for(let row=1;row<canvas.width-1;row++){
+		 const index=getPixel(row,col);
+		 const total=(data[index]+data[index+1]+data[index+2])/3;
+		 const normal=(total/255.0);
+		   if(normal>=hackerEffectIntensity){
+			   data[index]=0;
+			   data[index+1]=255;
+			   data[index+2]=0;
+			  
+		   }else{
+			   data[index]=0;
+			   data[index+1]=0;
+			   data[index+2]=0;
+			   data[index+3]=255;
+		   }	 
+		 
+	}
+  }
+	
 }
   
   
@@ -383,6 +410,15 @@ requestAnimationFrame(update)
 	    activeChannels[2]=activeChannels[2];
 	    document.getElementById("blue").checked=activeChannels[2];
 	
+   }
+   
+   function toggleHackerEffect(){
+	   hackerEffectEnabled=!hackerEffectEnabled;
+	  document.getElementById("hackerBox").checked=hackerEffectEnabled;
+   }
+   
+   function hackerEffectIntensityChanged(slider){
+	   hackerEffectIntensity=slider.value/100;
    }
 update()
 

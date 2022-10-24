@@ -53,6 +53,11 @@
 		   <p>Enable B/W inversion</p>
        <input type="checkbox" id="inversionBox">
        </div>
+        <div class="switch" onclick="toggleHackerEffect()">
+		   <p>Hacker Effect</p>
+       <input type="checkbox" id="hackerBox">
+       </div>
+       <input type="range" min="1" max="100" value="80" class="slider" id="hackerRange" onchange="hackerEffectIntensityChanged(this)">
         <div class="options-header">
       <p>Active color channels</p>
      </div>

@@ -103,6 +103,41 @@ optgroup{
 
 }
 
+.slider {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 15px;
+  margin-left:50px;
+  border-radius:5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 20px;
+  border-radius:5px;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius:10px;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
 
 .
 
