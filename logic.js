@@ -10,7 +10,7 @@ var started=false;
 const SobelkernelGx=[];
 const SobelkernelGy=[];
 const Gausiankernel3By3=[];
-
+const haarsStages=[];
 //initialize the Sobel kernel
 SobelkernelGx.push([-1,0,1],[-2,0,2],[-1,0,1]);
 SobelkernelGy.push([1,2,1],[0,0,0],[-1,-2,-1]);
@@ -322,6 +322,98 @@ function calculateGausinanBlur(data){
 		return total;
  }
   
+  
+ function initializeHaarKernel(sizeRow,sizeCol){
+	 //first vertical a 2x2 kernel
+	 var v2=[];
+	 for(let row=0;row<sizeRow;row++){
+		   cArray=[];
+	  for(let col=0;col<sizeCol;col++){
+	       cArray.push(0);
+	 }
+	  v2.push(cArray);
+	 
+ }
+     haarsStages.push(v2);
+}  
+
+
+function HaarFacialRecognition(data){
+	
+	const testData=[[0.4,0.7,0.9,0.7,0.4,0.5,1.0,0.3],
+	                [0.3,1.0,0.5,0.8,0.7,0.4,0.1,0.4],
+	                [0.9,0.4,0.1,0.2,0.5,0.8,0.2,0.9],
+	                [0.3,0.6,0.8,1.0,0.3,0.7,0.5,0.3],
+	                [0.2,0.9,0.1,0.5,0.1,0.4,0.8,0.8],
+	                [0.5,0.1,0.3,0.7,0.9,0.6,1.0,0.2],
+	                [0.8,0.4,1.0,0.2,0.7,0.3,0.1,0.4],
+	                [0.4,0.9,0.6,0.6,0.2,1.0,0.5,0.9]];
+   const testOutput=[];	 
+              
+	//create an integral image to reduce computation
+	for(let i=0;i<testData.length;i++){
+		var column=[];
+		for(let j=0;j<testData[i].length;j++){
+			 var value=0;
+			  for(it=i;it>=0;it--){
+				  for(jt=j;jt>=0;jt--)
+				   value+=testData[it][jt];
+			 }
+			
+			column.push(value);
+		}
+		
+		testOutput.push(column);
+	}
+	
+	
+	 const vkernel=haarsStages[0];
+	
+  for(let i=1;i<testOutput.length-vkernel.length;i++){ 
+	  for(let j=1;j<testOutput[i].length-vkernel[0].length;j+=vkernel[0].length){
+		  //top Left pixel weight
+		  const first=calculateHaar(testOutput,vkernel,i,j);
+		  const second=calculateHaar(testOutput,vkernel,i,j+vkernel[0].length/2);
+		  console.log(first[0]+"  "+first[1]);
+		  console.log(first[2]+" "+first[3]);
+		   console.log(second[0]+"  "+second[1]);
+		  console.log(second[2]+" "+second[3]);
+	  }
+  }
+	
+}
+
+
+function calculateHaar(integral,vkernel,i,j){
+	  var TopLeft= integral[i-1][j-1];
+	  var TopRight=integral[i-1][j+vkernel[0].length/2-1];
+	  var BottomLeft=integral[i+vkernel.length-1][j-1];
+	  var BottomRight=integral[i+vkernel.length-1][j+vkernel[0].length/2-1];
+		  
+	return [TopLeft,TopRight,BottomLeft,BottomRight];
+}
+
+function printHaarKernels(){
+	
+	
+	for(let k=0;k<haarsStages.length;k++){
+		const stage=haarsStages[k];
+		var strOut=""
+	   for(let i=0;i<stage.length;i++){
+		   for(let j=0;j<stage[i].length;j++){
+			   
+			   strOut+=stage[i][j];
+		   }
+		   strOut+="\n";
+		   
+	   }	
+		console.log(strOut);
+		console.log(" ");
+	}
+	
+	
+	
+}
   function dither_pixel(data,index,quant_error){
 	  if(activeChannels[0])
 	 data[index]=data[index]+quant_error*7/ditheringBitDepth;
@@ -350,6 +442,8 @@ function calculateGausinanBlur(data){
    function find_closest_palette_color(oldpixel){
 	    return Math.round(oldpixel/255);  
    }
+   
+   
    
    
    function toggleBitDepth(selectObject){
@@ -385,8 +479,14 @@ function calculateGausinanBlur(data){
 			case "4px":
 			pixelArtOffset=4;
 			break;
+			case "6px":
+			pixelArtOffset=6;
+			break;
 			case "8px":
 			pixelArtOffset=8;
+			break;
+			case "12px":
+			pixelArtOffset=12;
 			break;
 			case "16px":
 			pixelArtOffset=16;
@@ -466,4 +566,6 @@ function calculateGausinanBlur(data){
 	   hackerEffectIntensity=slider.value/100;
    }
 update()
-
+initializeHaarKernel(6,6);
+initializeHaarKernel(6,6);
+HaarFacialRecognition(null);
